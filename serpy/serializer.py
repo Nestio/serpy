@@ -1,4 +1,4 @@
-from serpy.fields import Field
+from .fields import Field
 import operator
 import six
 
@@ -93,15 +93,19 @@ class Serializer(six.with_metaclass(SerializerMeta, SerializerBase)):
     def _serialize(self, obj, fields):
         v = {}
         for name, getter, to_value, call, required, pass_self in fields:
-            if pass_self:
-                result = getter(self, obj)
-            else:
-                result = getter(obj)
-                if required or result is not None:
-                    if call:
-                        result = result()
-                    if to_value:
-                        result = to_value(result)
+            try:
+                if pass_self:
+                    result = getter(self, obj)
+                else:
+                    result = getter(obj)
+                    if required or result is not None:
+                        if call:
+                            result = result()
+                        if to_value:
+                            result = to_value(result)
+            except Exception as e:
+                e.args += ("Field Serialization Error", name, result)
+                raise e
             v[name] = result
 
         return v
