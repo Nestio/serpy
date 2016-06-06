@@ -1,16 +1,19 @@
 from codecs import open
 from os import path
 from setuptools import setup, find_packages
-import serpy
 
 here = path.abspath(path.dirname(__file__))
+
+__version__ = '0.0.4'
+__author__ = 'Clark DuVall'
+__license__ = 'MIT'
 
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='serpy',
-    version=serpy.__version__,
+    version=__version__,
     description='ridiculously fast object serialization',
     long_description=long_description,
     url='https://github.com/clarkduvall/serpy',
